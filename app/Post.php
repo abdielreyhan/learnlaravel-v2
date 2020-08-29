@@ -8,8 +8,12 @@ class Post extends Model
 {
     // if name table diferent not plural
     // protected $table='post';
-    public function scopeLatestFirst()
-    {
-        return $this->latest()->first();
-    }
+    protected $fillable=['title','slug','body'];
+    // protected $guarded=[];
+    // public function scopeLatestFirst()
+    // {
+    //     return $this->latest()->first();
+    // }
+
+
 }
