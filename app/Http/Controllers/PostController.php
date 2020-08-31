@@ -61,10 +61,29 @@ class PostController extends Controller
         // $post=$request->all();
         $post['slug']=\Str::slug(request('title'));
         Post::create($post);
-
+        
+        session()->flash('success','The post was created');
         return redirect()->to('post');
 
         // if you want to back at this controller
         // return back();
+    }
+
+    public function edit(Post $post)
+    {
+        return view('post.edit',compact('post'));
+    }
+
+    public function update(Post $post)
+    {  
+        $change=request()->validate([
+            'title'=>'required|min:3',
+            'body'=>'required',
+        ]);
+        
+        $post->update($change);
+
+        session()->flash('success','The post was updated');
+        return redirect()->to('post');
     }
 }

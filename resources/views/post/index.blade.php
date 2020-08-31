@@ -24,8 +24,9 @@
                                 <a href="post/{{$post->slug}}">Readmore</a>
                             </div>
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer d-flex justify-content-between">
                             Published on {{$post->created_at->format('d F Y')}}, ({{$post->created_at->diffForHumans()}})
+                            <a href="post/{{$post->slug}}/edit" class="btn btn-sm btn-primary">Edit</a>
                         </div>
                     </div>
                 </div>
