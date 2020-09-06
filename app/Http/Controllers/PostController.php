@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
+// use Illuminate\Http\Request;
 use App\Post;
 
 class PostController extends Controller
@@ -31,16 +32,13 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('post.create');
+        return view('post.create',['post'=>new Post]);
 
     }
 
-    public function store()
+    public function store(PostRequest $request)
     {
-        $post=request()->validate([
-            'title'=>'required|min:3',
-            'body'=>'required',
-        ]);
+        $post=$request->all();
         // ---------- Method 1
         // $post = new Post;
 
@@ -74,16 +72,15 @@ class PostController extends Controller
         return view('post.edit',compact('post'));
     }
 
-    public function update(Post $post)
+    public function update(PostRequest $request,Post $post)
     {  
-        $change=request()->validate([
-            'title'=>'required|min:3',
-            'body'=>'required',
-        ]);
+        $change=$request->all();
+        
         
         $post->update($change);
 
         session()->flash('success','The post was updated');
         return redirect()->to('post');
     }
+
 }
