@@ -14,6 +14,12 @@ class Post extends Model
     // {
     //     return $this->latest()->first();
     // }
-
+    
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+        // if relation not category_id
+        // return $this->belongsTo(Category::class,'subject');
+    }
 
 }

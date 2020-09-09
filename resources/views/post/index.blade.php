@@ -6,7 +6,11 @@
     <div class="container">
         <div class="d-flex justify-content-between">
             <div>
+            @isset($category)
+                <h4>Category {{$category->name}}</h4>
+            @else
                 <h3>All Post</h3>
+            @endif
                 <hr>
             </div>
             <div>
@@ -21,7 +25,7 @@
                         <div class="card-body">
                             {{Str::limit($post->body,100,'...')}}
                             <div>
-                                <a href="post/{{$post->slug}}">Readmore</a>
+                                <a href="/post/{{$post->slug}}">Readmore</a>
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between">

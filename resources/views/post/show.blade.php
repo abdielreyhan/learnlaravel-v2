@@ -5,6 +5,11 @@
 @section('content')
     <div class="container">
         <h3><p>{{$post->title}}</p></h3>
+        <div class="text-secondary">
+            <a href="/categories/{{$post->category->slug}}">{{$post->category->name}}</a> &middot; {{$post->created_at->format("d F, Y")}}
+        </div>
+
+        <hr>
         <p>{{$post->body}}</p>
 
         <!-- Button trigger modal -->
