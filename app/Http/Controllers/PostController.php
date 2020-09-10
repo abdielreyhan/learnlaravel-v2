@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 // use Illuminate\Http\Request;
-use App\Post;
+use App\{Post , Tag, Category};
+// use App\Tag;
+// use App\Category;
 
 class PostController extends Controller
 {
@@ -32,13 +34,18 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('post.create',['post'=>new Post]);
+
+        return view('post.create',[
+            'post'=>new Post,
+            'categories'=>Category::get(),
+            'tags'=>Tag::get()
+            ]);
 
     }
 
     public function store(PostRequest $request)
     {
-        $post=$request->all();
+        $attr=$request->all();
         // ---------- Method 1
         // $post = new Post;
 
@@ -57,8 +64,11 @@ class PostController extends Controller
 
         // ------------- Method 3
         // $post=$request->all();
-        $post['slug']=\Str::slug(request('title'));
-        Post::create($post);
+        $attr['slug']=\Str::slug(request('title'));
+        $attr['category_id']=request('category'); //relation one to many put category_id in post
+
+        $post=Post::create($attr);
+        $post->tags()->attach(request('tags')); //relation many to many
         
         session()->flash('success','The post was created');
         return redirect()->to('post');
@@ -69,15 +79,20 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
-        return view('post.edit',compact('post'));
+        return view('post.edit',[
+            'post'=>$post,
+            'categories'=>Category::get(),
+            'tags'=>Tag::get()
+        ]);
     }
 
     public function update(PostRequest $request,Post $post)
     {  
-        $change=$request->all();
+        $attr=$request->all();
+        $attr['category_id']=request('category'); //relation one to many put category_id in post
         
-        
-        $post->update($change);
+        $post->update($attr);
+        $post->tags()->sync(request('tags')); //relation many to many
 
         session()->flash('success','The post was updated');
         return redirect()->to('post');
@@ -85,7 +100,9 @@ class PostController extends Controller
 
     public function delete(Post $post)
     {
+        $post->tags()->detach();
         $post->delete();
+
         session()->flash('success','The post was Deleted');
         return redirect()->to('post');
     }

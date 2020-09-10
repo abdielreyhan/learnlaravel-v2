@@ -8,7 +8,7 @@ class Post extends Model
 {
     // if name table diferent not plural
     // protected $table='post';
-    protected $fillable=['title','slug','body'];
+    protected $fillable=['title','slug','body','category_id'];
     // protected $guarded=[];
     // public function scopeLatestFirst()
     // {
@@ -20,6 +20,11 @@ class Post extends Model
         return $this->belongsTo(Category::class);
         // if relation not category_id
         // return $this->belongsTo(Category::class,'subject');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 
 }
