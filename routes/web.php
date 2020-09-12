@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/','HomeController');
+// Route::get('/','HomeController');
 
-Route::get('post','PostController@index');
+Route::get('post','PostController@index')->name('posts.index');
 
-Route::get('post/create','PostController@create');
+Route::get('post/create','PostController@create')->name('posts.create');
 Route::post('post/store','PostController@store');
 
 Route::get('post/{post:slug}/edit','PostController@edit');
@@ -31,3 +31,6 @@ Route::get('post/{post:slug}','PostController@show');
 Route::view('contact','contact');
 Route::view('about','about');
 Route::view('login','login');
+Auth::routes();
+
+Route::get('/', 'HomeController@index')->name('home');
