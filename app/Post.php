@@ -27,4 +27,10 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function author()
+    {
+        // Jika nama fungsi tidak sma dengan nama table, tambahi user_id sebagai fill identifier
+        return $this->belongsTo(User::class,'user_id');
+    }
+
 }

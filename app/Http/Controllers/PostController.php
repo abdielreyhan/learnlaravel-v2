@@ -10,6 +10,12 @@ use App\{Post , Tag, Category};
 
 class PostController extends Controller
 {
+
+    // public function __construct()
+    // {
+    //     $this->middleware('auth')->except(['index','show']);
+    // }
+
     public function index()
     {
         $posts=Post::latest()->paginate(6);
@@ -66,8 +72,10 @@ class PostController extends Controller
         // $post=$request->all();
         $attr['slug']=\Str::slug(request('title'));
         $attr['category_id']=request('category'); //relation one to many put category_id in post
+        // $attr['user_id']=auth()->id();
 
-        $post=Post::create($attr);
+        // $post=Post::create($attr);
+        $post=auth()->user()->posts()->create($attr);
         $post->tags()->attach(request('tags')); //relation many to many
         
         session()->flash('success','The post was created');
@@ -90,6 +98,7 @@ class PostController extends Controller
     {  
         $attr=$request->all();
         $attr['category_id']=request('category'); //relation one to many put category_id in post
+       
         
         $post->update($attr);
         $post->tags()->sync(request('tags')); //relation many to many
@@ -100,10 +109,16 @@ class PostController extends Controller
 
     public function delete(Post $post)
     {
-        $post->tags()->detach();
-        $post->delete();
+        if(auth()->user()->is($post->author)){
+            dd('ya benar');
+        }
+        else{
+            dd('salah');
+        }
+        // $post->tags()->detach();
+        // $post->delete();
 
-        session()->flash('success','The post was Deleted');
-        return redirect()->to('post');
+        // session()->flash('success','The post was Deleted');
+        // return redirect()->to('post');
     }
 }
