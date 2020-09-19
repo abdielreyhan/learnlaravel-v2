@@ -96,6 +96,7 @@ class PostController extends Controller
 
     public function update(PostRequest $request,Post $post)
     {  
+        $this->authorize('update',$post);
         $attr=$request->all();
         $attr['category_id']=request('category'); //relation one to many put category_id in post
        
@@ -109,16 +110,13 @@ class PostController extends Controller
 
     public function delete(Post $post)
     {
-        if(auth()->user()->is($post->author)){
-            dd('ya benar');
-        }
-        else{
-            dd('salah');
-        }
-        // $post->tags()->detach();
-        // $post->delete();
+        $this->authorize('delete',$post);
+        $post->tags()->detach();
+        $post->delete();
 
-        // session()->flash('success','The post was Deleted');
-        // return redirect()->to('post');
+        session()->flash('success','The post was Deleted');
+        return redirect()->to('post');
+        
+        
     }
 }

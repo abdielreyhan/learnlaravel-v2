@@ -37,9 +37,9 @@
                         </div>
                         <div class="card-footer d-flex justify-content-between">
                             Published on {{$post->created_at->format('d F Y')}}, ({{$post->created_at->diffForHumans()}})
-                            @auth
+                            @can('update',$post)
                                 <a href="/post/{{$post->slug}}/edit" class="btn btn-sm btn-primary">Edit</a>
-                            @endauth
+                            @endcan
                         </div>
                     </div>
                 </div>

@@ -19,7 +19,7 @@
         </div>
         <!-- Button trigger modal -->
         <!-- @auth -->
-        @if(auth()->user()->is($post->author))
+        @can('delete',$post)
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
             Delete Post
             </button>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-        @endif
+        @endcan
         <!-- @endauth -->
     </div>
 @endsection
