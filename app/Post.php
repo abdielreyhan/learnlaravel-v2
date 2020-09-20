@@ -8,7 +8,8 @@ class Post extends Model
 {
     // if name table diferent not plural
     // protected $table='post';
-    protected $fillable=['title','slug','body','category_id'];
+    protected $fillable=['title','slug','body','category_id','thumbnail'];
+    protected $with=['author','category','tags'];
     // protected $guarded=[];
     // public function scopeLatestFirst()
     // {
@@ -31,6 +32,11 @@ class Post extends Model
     {
         // Jika nama fungsi tidak sma dengan nama table, tambahi user_id sebagai fill identifier
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function getTakeImageAttribute()
+    {
+        return "/storage/".$this->thumbnail;
     }
 
 }

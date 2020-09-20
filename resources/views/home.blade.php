@@ -3,21 +3,38 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
+        @forelse($posts as $post)
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    @if($post->thumbnail)
+                        <a href="{{route('posts.show',$post->slug)}}">
+                            <img style="height:270px; object-fit:cover; object-position:center;" class="card-img-top" src="{{$post->takeImage}}" alt="">
+                        </a>
                     @endif
-
-                    {{ __('You are logged in!') }}
+                    <div class="card-body">
+                        <div>
+                            <a href="{{route('categories.show',$post->category->slug)}}" class="text-secondary"><small>{{$post->category->name}} - </small></a>
+                            @foreach($post->tags as $tag)
+                                <a href="{{route('tags.show',$tag->slug)}}" class="text-secondary"><small>{{$tag->name}}</small></a>
+                            @endforeach
+                        </div>
+                        <h5><a href="{{route('posts.show',$post->slug)}}" class="card-title text-dark">{{$post->title}}</a></h5>
+                        <div class="text-secondary my-3">
+                            {{Str::limit($post->body,100,'...')}}
+                        </div>
+                        <!-- <div>
+                            <a href="/post/{{$post->slug}}">Readmore</a>
+                        </div> -->
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        Published on {{$post->created_at->format('d F Y')}}, ({{$post->created_at->diffForHumans()}})
+                        
+                    </div>
                 </div>
             </div>
-        </div>
+        @empty
+            <div class="alert alert-info">Nothing to Show   </div>
+        @endforelse
     </div>
 </div>
 @endsection

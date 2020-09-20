@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header">New Post</div>
                 <div class="card-body">
-                    <form action="/post/store" method="POST">
+                    <form action="/post/store" method="POST" enctype="multipart/form-data">
                         @csrf
                         @include('post.partials.form-controls',['submit'=>'Submit'])
                     </form>
